@@ -1,0 +1,14 @@
+model_name: vgg19_200_mixed
+model_to_use: vgg19
+
+image_path: datasets/mixed
+num_classes:  6
+
+min_exec_epochs: 30
+max_exec_epochs: 30
+
+image_mean: "0.624, 0.503, 0.335"
+image_std:  "0.095, 0.097, 0.098"
+are_images_gray: "no"
+
+manualSeed: 0

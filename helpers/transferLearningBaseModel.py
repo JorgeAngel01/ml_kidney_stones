@@ -1,6 +1,6 @@
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning.metrics.functional import accuracy
+from torchmetrics.functional import accuracy
 from pytorch_lightning.callbacks import EarlyStopping 
 import torch
 from sklearn.metrics import classification_report, confusion_matrix

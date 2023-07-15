@@ -14,7 +14,7 @@ class BaseModel(pl.LightningModule):
   """
   Base model where all the methods required by pytorch lightning are defined.
   """
-  def __init__(self, hparams, index_to_label = None, seed=None):
+  def __init__(self, hyperparams, index_to_label = None, seed=None):
     if seed != None:
       random.seed(seed)
       np.random.seed(seed)
@@ -28,9 +28,9 @@ class BaseModel(pl.LightningModule):
       #os.environ['PYTHONHASHSEED'] = str(seed)
     
     super(BaseModel, self).__init__()
-    self.hparams = hparams
+    self.hyperparams = hyperparams
     self.index_to_label = index_to_label
-    self.learning_rate = hparams["lr"]
+    self.learning_rate = hyperparams["lr"]
     self.last_classification_report = None
 
 

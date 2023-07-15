@@ -68,7 +68,7 @@ class BaseModel(pl.LightningModule):
     pred, pred_index = torch.max(predictions, dim=0)
     return { "real": targets, "pred": pred_index, "correct": int(targets == pred_index) }
 
-  def training_epoch_end(self, outputs):
+  def on_training_epoch_end(self, outputs):
     avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
     acc = sum([x["accuracy"] for  x in outputs])
     avg_acc = acc/len(outputs)

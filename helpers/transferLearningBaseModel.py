@@ -32,6 +32,7 @@ class BaseModel(pl.LightningModule):
     self.index_to_label = index_to_label
     self.learning_rate = hyperparams["lr"]
     self.last_classification_report = None
+    self.validation_step_outputs = []
 
 
   def set_class_indices(self, index_to_label):
@@ -156,6 +157,7 @@ class BaseModel(pl.LightningModule):
       acc = torch.sum(preds == targets.data) / (targets.shape[0] * 1.0)
       #acc = self.multi_acc(y_val_pred, y)
       #self.logger('val_loss', val_loss)
+      self.validation_step_outputs.append(preds)
       return {'val_loss': val_loss, 'val_acc': acc}
 
   """

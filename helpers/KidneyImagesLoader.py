@@ -41,7 +41,7 @@ class KidneyImagesLoader(pl.LightningDataModule):
     if zip_path:
       self.zip_path = zip_path
       self.image_path = self.zip_path[self.zip_path.rindex("/"):]
-      self.image_path = "/content/drive/MyDrive/Baseline DL-based methods" + self.image_path.replace(".zip", "")
+      self.image_path = "/content" + self.image_path.replace(".zip", "")
     else:
       self.image_path = images_path
     

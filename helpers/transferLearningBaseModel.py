@@ -84,15 +84,8 @@ class BaseModel(pl.LightningModule):
     #}
 
   def on_validation_epoch_end(self):
-      val_losses = []
-      val_accs = []
-
-      for output in self.validation_step_outputs:
-        val_losses.append(output['val_loss'])
-        val_accs.append(output['val_acc'])
-
-      avg_loss = torch.stack(val_losses).mean()
-      avg_acc = torch.stack(val_accs).mean()
+      avg_loss = torch.stack([x[0] for x in self.validation_step_outputs]).mean()
+      avg_acc = torch.stack([x[1] for x in self.validation_step_outputs]).mean()
 
       self.accuracy_history["val"].append(avg_acc.item())
       self.loss_history["val"].append(avg_loss.item())

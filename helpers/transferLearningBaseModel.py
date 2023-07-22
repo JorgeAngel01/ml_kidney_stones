@@ -33,6 +33,7 @@ class BaseModel(pl.LightningModule):
     self.learning_rate = hyperparams["lr"]
     self.last_classification_report = None
     self.validation_step_outputs = []
+    self.training_step_outputs = []
 
 
   def set_class_indices(self, index_to_label):
@@ -46,6 +47,9 @@ class BaseModel(pl.LightningModule):
       acc = torch.sum(preds == targets.data) / (targets.shape[0] * 1.0)
       #acc = self.multi_acc(y_val_pred, y)
       #self.logger('train_loss', loss)
+
+      self.training_step_outputs.append((loss, acc))
+
       return {
           'loss': loss,
           'accuracy': acc
@@ -69,10 +73,12 @@ class BaseModel(pl.LightningModule):
     pred, pred_index = torch.max(predictions, dim=0)
     return { "real": targets, "pred": pred_index, "correct": int(targets == pred_index) }
 
-  def on_train_epoch_end(self, outputs):
-    avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
-    acc = sum([x["accuracy"] for  x in outputs])
-    avg_acc = acc/len(outputs)
+  def on_train_epoch_end(self):
+    #avg_loss = torch.stack([x['loss'] for x in outputs]).mean()
+    avg_loss = torch.stack([x[0] for x in self.training_step_outputs]).mean()
+
+    acc = sum([x[1] for  x in self.training_step_outputs])
+    avg_acc = acc/len(self.training_step_outputs)
     self.accuracy_history["train"].append(avg_acc.item())
     self.loss_history["train"].append(avg_loss.item())
     #logs = {'Train Loss': avg_loss, 'Train Accuracy': acc/len(outputs), 'step': self.current_epoch}

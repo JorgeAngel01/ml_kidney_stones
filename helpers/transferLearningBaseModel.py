@@ -159,8 +159,8 @@ class BaseModel(pl.LightningModule):
       #acc = self.multi_acc(y_val_pred, y)
       #self.logger('val_loss', val_loss)
 
-      self.validation_step_outputs.append(val_loss)
-      self.validation_step_outputs.append(acc)
+      self.validation_step_outputs.append((val_loss, acc))
+
       return {'val_loss': val_loss, 'val_acc': acc}
 
   """

@@ -44,6 +44,9 @@ class KidneyImagesLoader(pl.LightningDataModule):
       self.image_path = "/content" + self.image_path.replace(".zip", "")
     else:
       self.image_path = images_path
+
+    if images_path:
+      self.image_path = images_path
     
     self.val_percentage = val_percentage
     self.train_batch_size = train_batch_size

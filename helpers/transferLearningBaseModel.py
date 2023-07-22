@@ -23,8 +23,7 @@ class BaseModel(pl.LightningModule):
       torch.cuda.manual_seed_all(seed)
       torch.backends.cudnn.enabled = False 
       torch.backends.cudnn.benchmark = False
-      #torch.backends.cudnn.deterministic = True
-      torch.use_deterministic_algorithms(warn=True)
+      torch.backends.cudnn.deterministic = True
       pl.seed_everything(seed)
       #os.environ['PYTHONHASHSEED'] = str(seed)
     

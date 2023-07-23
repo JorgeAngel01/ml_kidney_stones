@@ -197,3 +197,16 @@ class BaseModel(pl.LightningModule):
 
   def get_loss_history(self):
     return self.loss_history
+  
+  def custom_deep_copy(self):
+        # Create a new instance of the model
+        copied_model = self.__class__(hyperparams=self.hyperparams)
+
+        # Copy other attributes manually
+        copied_model.index_to_label = copy.deepcopy(self.index_to_label)
+        copied_model.learning_rate = self.learning_rate
+        copied_model.last_classification_report = self.last_classification_report
+        # ... (copy other relevant attributes)
+
+        # Return the copied model
+        return copied_model

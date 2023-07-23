@@ -34,6 +34,7 @@ class BaseModel(pl.LightningModule):
     self.last_classification_report = None
     self.validation_step_outputs = []
     self.training_step_outputs = []
+    self.test_step_outputs = []
 
 
   def set_class_indices(self, index_to_label):
@@ -71,6 +72,9 @@ class BaseModel(pl.LightningModule):
     predictions = self(inputs)
     predictions = torch.log_softmax(predictions[0], dim=0)
     pred, pred_index = torch.max(predictions, dim=0)
+
+    self.test_step_outputs.append((targets, pred_index, int(targets == pred_index)))
+
     return { "real": targets, "pred": pred_index, "correct": int(targets == pred_index) }
 
   def on_train_epoch_end(self):
@@ -107,10 +111,13 @@ class BaseModel(pl.LightningModule):
   def test_y_pred(self):
     return np.array(self.last_test_y_pred)
   
-  def test_epoch_end(self, outputs):
-    real = [x["real"].item() for  x in outputs]
-    pred = [x["pred"].item() for  x in outputs]
-    correct = sum([x["correct"] for  x in outputs])
+  def on_test_epoch_end(self):
+    #real = [x["real"].item() for  x in outputs]
+    #pred = [x["pred"].item() for  x in outputs]
+    #correct = sum([x["correct"] for  x in outputs])
+    real = [x[0].item() for  x in self.test_step_outputs]
+    pred = [x[1].item() for  x in self.test_step_outputs]
+    correct = sum([x[2] for  x in self.test_step_outputs])
     self.last_test_y = real
     self.last_test_y_pred = pred
     labels = None

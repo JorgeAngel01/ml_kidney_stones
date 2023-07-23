@@ -145,7 +145,7 @@ class BaseModel(pl.LightningModule):
     #result = pl.EvalResult()
     #result.log('accuracy', round(correct/len(outputs), 2))
     #return result
-    return {'accuracy', round(correct/len(outputs), 2)}
+    return {'accuracy', round(correct/len(self.test_step_outputs), 2)}
 
   def teardown(self, stage):
     self.logger.experiment.flush()

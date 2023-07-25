@@ -97,10 +97,11 @@ class KidneyImagesLoader(pl.LightningDataModule):
   """
   def setup(self, stage=None):
     if hasattr(self, 'zip_path'):
-      cmd = 'yes | cp "'+  self.zip_path + '" -d "/content/"'
-      os.system(cmd)
-      cmd = 'unzip -o --qq ' + self.image_path + ".zip" + ' -d "' + self.image_path + '"'
-      os.system(cmd)
+      if not os.path.exists(self.image_path):
+          cmd = 'yes | cp "'+  self.zip_path + '" -d "/content/"'
+          os.system(cmd)
+          cmd = 'unzip -o --qq ' + self.image_path + ".zip" + ' -d "' + self.image_path + '"'
+          os.system(cmd)
     self.get_train_dataset()
     self._train_val_samplers()
 

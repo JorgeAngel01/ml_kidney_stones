@@ -73,8 +73,7 @@ class BaseModel(pl.LightningModule):
     predictions = torch.log_softmax(predictions[0], dim=0)
     pred, pred_index = torch.max(predictions, dim=0)
 
-    correct_predictions = sum([int(target == pred_idx) for target, pred_idx in zip(targets, pred_index)])
-    self.test_step_outputs.append((targets.item(), pred_index.item(), correct_predictions))
+    self.test_step_outputs.append((targets, pred_index, int(targets == pred_index)))
 
     return { "real": targets, "pred": pred_index, "correct": int(targets == pred_index) }
 
